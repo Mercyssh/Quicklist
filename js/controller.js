@@ -27,8 +27,6 @@ function createList(){
     if(newlisttitle.value != ''){
         let newlist = new List(newlisttitle.value, [], 'active');
         userdata.push(newlist);
-
-        // Clear out everything
         saveData();
     }
 }
@@ -38,9 +36,17 @@ function deleteList(e){
     let list = userdata.findIndex(val => val.id == listcard.id);
     userdata.splice(list, 1);
     saveData();
+}
 
-    // console.log(listcard);
-    // console.log(list);
+// TO BE CONTINUED FROM HERE
+function createTask(){
+    //TBW
+}
+function doneTask(){
+    //TBW
+}
+function deleteTask(){
+    //TBW
 }
 
 // Save userdata to localstorage
@@ -64,28 +70,11 @@ function toggleListForm(){
 
 // Update the DOM Whenever needed
 function updateDOM(){
+        //REMOVE ALL LISTS
+        let lists = root.querySelectorAll('.list');
+        lists.forEach(element => element.remove());
 
-        // Clean the slate
-        // let template = `
-        // <div id="newlistbtn">
-
-        //     <div class="newlistbtn">
-        //         New List +
-        //     </div>
-
-        //     <div class="newlistform" hidden>
-        //         <input type="text" class="newlisttitle" placeholder="Enter List Title.." spellcheck="false">
-        //         <div class="newlistbtns">
-        //             <img src="assets/checkmark.svg" alt="Save" width="18px" id="acceptlistbtn" title="Create List">
-        //             <img src="assets/cross.svg" alt="Discard" width="14px" id="discardlistbtn" title="Discard List">
-        //         </div>
-        //     </div>
-
-        // </div>
-        // `
-        // root.innerHTML = template;
-
-        //GENEREATE LISTS AND TASKS IN EACH LIST
+        //REGENEREATE LISTS AND TASKS IN EACH LIST
         for(var i=0; i<userdata.length; i++){
 
             // find if there are no tasks
