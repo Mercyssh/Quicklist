@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Quicklist</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="assets/checkmark.svg" type="image/gif" sizes="16x16">
+</head>
+<body>
+	<div id="root">
+
+        <!-- Sample List Template-->
+
+
+        <!-- Input form and Todo List -->
+		<div id="newlistbtn">
+
+            <!-- Toggle button -->
+            <div class="newlistbtn">
+                New List +
+            </div>
+
+            <!-- Form -->
+            <div class="newlistform" hidden>
+                <input type="text" class="newlisttitle" placeholder="Enter List Title.." spellcheck="false">
+                <div class="newlistbtns">
+                    <img src="assets/checkmark.svg" alt="Save" width="18px" id="acceptlistbtn" title="Create List">
+                    <img src="assets/cross.svg" alt="Discard" width="14px" id="discardlistbtn" title="Discard List">
+                </div>
+            </div>
+
+        </div>
+
+	</div>
+
+    <!-- Logic here -->
+    <script type="text/javascript" src="js/data.js"></script>
+    <script type="text/javascript" src="js/controller.js"></script>
+</body>
+</html>

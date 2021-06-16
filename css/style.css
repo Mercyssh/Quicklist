@@ -1,0 +1,253 @@
+
+/* GLOBAL RULES */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+*{
+    box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    -webkit-box-sizing: border-box !important;
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --primarybg: #0B1C33;
+    --secondarybg: #21365F;
+    --hoverbg: #214386;
+    --atext: #278EA5;
+    --hovertext: #35b7d4;
+    --primarytext: #FFFFFF;
+    --secondarytext: #989898;
+    --tertiarytext: #0DC26B;
+    --maxlistwidth: 375px;
+}
+
+body{
+    background-color: var(--primarybg);
+    color: var(--primarytext);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+#root{
+    margin: 41px;
+    display: flex;
+    column-gap: 34px;
+}
+
+.hide{
+    display: none !important;
+}
+
+
+
+/* HANDLES LISTS AND TASKS */
+/* List styling */
+.list{
+    display: flex;
+    flex-direction: column;
+    width: var(--maxlistwidth);
+
+    background-color: var(--secondarybg);
+    border-radius: 8px;
+    box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.15);
+}
+/* Container for List title and icons */
+.listheader{
+    padding-left: 12px;
+    padding-top: 14px;
+    padding-right: 22px;
+
+    display: flex;
+    column-gap: 30px;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Styles the input tag for the list title */
+.listtitle{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+
+    color: var(--primarytext);
+    background-color: var(--secondarybg);
+    
+    padding: 4px 13px;
+    width: 100%;
+    
+    outline: none;
+    border-radius: 8px;
+    border: 2px solid var(--secondarybg);
+
+    transition: 0.1s all;
+}
+.listtitle:focus{
+    color: var(--primarybg);
+    background-color: white;
+    border: 2px solid var(--atext);
+}
+/* Container for the icons */
+.listicons{
+    display: flex;
+    column-gap: 21px;
+}
+.listicons *{
+    cursor: pointer;
+}
+
+/* Container for list of tasks */
+.listtasks{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding: 20px 0px
+}
+/* Container for task */
+.task{
+    width: 100%; 
+    padding: 11px 23px;
+    border-left: 4px solid transparent;
+    
+    transition: 0.05s all;
+    cursor: pointer;
+}
+.task:hover{
+    border-left: 4px solid var(--tertiarytext);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.25);
+}
+.taskheader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.tasktitle{
+    max-width: 80%;
+    font-size: 18px;
+    font-weight: 400;
+}
+.taskdescription{
+    max-width: 80%;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--secondarytext);
+}
+/* Check off Completed Task */
+.completed{
+    color: var(--tertiarytext);
+    text-decoration: line-through;
+}
+
+/* Container for new task section */
+.listnewtask{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 27px;
+}
+/* Button to activate new task form */
+.newtaskbtn{
+    color: var(--atext);
+    font-size: 18px;
+
+    user-select: none;
+    -moz-user-select: none;
+    cursor: pointer;
+
+    transition: 0.1s all;
+}
+.newtaskbtn:active{
+    color: var(--primarytext)
+}
+
+/* Container for actual new task form */
+.listnewtask input{
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+
+    color: var(--primarytext);
+    background-color: var(--secondarybg);
+
+    outline: none;
+    border: transparent;
+}
+.listnewtask input::placeholder{
+    color: var(--atext);
+}
+.descriptioninput{
+    height: max-content;
+    max-width: 80% !important;
+    color: var(--secondarytext) !important;
+    font-size: 12px !important;
+    margin-bottom: 34px;
+}
+
+/* Form buttons */
+.newtaskbtns, .newlistbtns{
+    display: flex;
+    column-gap: 30px;
+    margin-bottom: 10px;
+}
+.newtaskbtns *, .newlistbtns *{
+    cursor: pointer;
+
+}
+.newtaskbtns *:hover, .newlistbtns *:hover{
+    background-color: var(--hoverbg);
+}
+
+
+
+/* SECTION HANDLES NEW LIST CREATION */
+/* Container for New list button */
+#newlistbtn{
+    display: flex;
+    flex-direction: column;
+
+    width: var(--maxlistwidth);
+    height: max-content;
+    padding: 14px 20px;
+
+    background-color: var(--secondarybg);
+    border-radius: 8px;
+    box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.15);
+}
+/* Button to activate new list form */
+.newlistbtn{
+    text-align: center;
+    color: var(--atext);
+
+    cursor: pointer;
+    user-select: none;
+
+    transition: .05s all;
+}
+.newlistbtn:hover, .newtaskbtn:hover{
+    color: var(--hovertext);
+}
+.newlistbtn:active{
+    color: var(--primarytext);
+}
+/* rules the new list form */
+.newlisttitle{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+
+    color: var(--primarybg);
+    background-color: var(--primarytext);
+    
+    padding: 4px 13px;
+    width: 100%;
+    
+    outline: none;
+    border-radius: 8px;
+    border: 2px solid var(--atext);
+
+    transition: 0.1s all;
+}
+.newlistbtns{
+    margin-top: 20px;
+    margin-bottom: 0;
+}
