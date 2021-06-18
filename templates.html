@@ -5,7 +5,7 @@
         <input class="listtitle" type="text" value="This is title">
         <div class="listicons">
             <img src="assets/archive.svg" class="togglearchive" alt="Archive" width="14px">
-            <img src="assets/cross.svg" class="deletelist" alt="Delete" width="14px">
+            <img src="assets/cross.svg" class="deletelist" alt="Delete" width="14px" onclick="deleteList(this)">
         </div>
     </div>
 
@@ -40,7 +40,7 @@
     <div class="listnewtask">
 
         <!-- Main Btn - Click to make form visible -->
-        <div class="newtaskbtn">+ Add new Task..</div>
+        <div class="newtaskbtn" onclick="toggleTaskForm(this)">+ Add new Task..</div>
 
         <!-- Form to fill up task info -->
         <div class="newtaskform" hidden>
@@ -49,8 +49,8 @@
                 <input type="text" class="descriptioninput" placeholder="Enter Description... (optional)"><br>
             </div>
             <div class="newtaskbtns">
-                <img src="assets/checkmark.svg" alt="Save" width="18px">
-                <img src="assets/cross.svg" alt="Discard" width="14px">
+                <img src="assets/checkmark.svg" alt="Save" width="18px" onclick="toggleTaskForm(this)">
+                <img src="assets/cross.svg" alt="Discard" width="14px" onclick="toggleTaskForm(this)">
             </div>
         </div>
 

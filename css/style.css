@@ -30,6 +30,7 @@ body{
 }
 
 #root{
+    width: max-content;
     margin: 41px;
     display: flex;
     column-gap: 34px;
@@ -47,6 +48,7 @@ body{
     display: flex;
     flex-direction: column;
     width: var(--maxlistwidth);
+    height: max-content;
 
     background-color: var(--secondarybg);
     border-radius: 8px;

@@ -21,7 +21,7 @@ console.log(userdata);
 
 
 // DECLARE FUNCTIONS
-// This function will add a list to current userdata
+// Create a new list
 function createList(){
     //If the title is not empty
     if(newlisttitle.value != ''){
@@ -30,22 +30,72 @@ function createList(){
         saveData();
     }
 }
-
-function deleteList(e){
-    let listcard =  e.target.parentNode.parentNode.parentNode
+// Delete the list
+function deleteList(ele){
+    let listcard =  ele.parentNode.parentNode.parentNode;
+    console.log(listcard)
     let list = userdata.findIndex(val => val.id == listcard.id);
     userdata.splice(list, 1);
     saveData();
 }
 
 // TO BE CONTINUED FROM HERE
-function createTask(){
+function createTask(listid, title, description){
+    //TBW
+    console.log(listid)
+    let listindex = userdata.findIndex(v => v.id == listid);
+    userdata[listindex].tasks.push(new Task(title, description, false));
+    
+    // console.log(listid, title, description);
+    saveData();
+}
+function doneTask(ele){
     //TBW
 }
-function doneTask(){
+function deleteTask(ele){
     //TBW
 }
-function deleteTask(){
+function toggleTaskForm(ele){
+    
+    let type = ele.alt;
+
+    // newlistbtn.hidden = !newlistbtn.hidden;
+    // newlistform.hidden = !newlistform.hidden;
+
+    if(type==undefined){
+        ele.hidden = !ele.hidden;
+        ele.parentNode.querySelector('.newtaskform').hidden = !ele.parentNode.querySelector('.newtaskform');
+
+    } else if(type=='Save'){
+        // If clickign on save btn, check if value is there
+        let forminput = ele.parentNode.parentNode.querySelector('.newtaskinputs');
+        let titleinput = forminput.querySelector('.titleinput');
+        let descriptioninput = forminput.querySelector('.descriptioninput');
+
+        if(titleinput.value!='')
+            createTask(ele.closest('.list').id, titleinput.value, descriptioninput.value);
+        titleinput.value='';
+        descriptioninput.value='';
+
+        // toggle the form
+        ele.parentNode.parentNode.hidden = !ele.parentNode.parentNode.hidden;
+        ele.parentNode.parentNode.parentNode.querySelector('.newtaskbtn').hidden = !ele.parentNode.parentNode.parentNode.querySelector('.newtaskbtn').hidden
+        
+
+    } else if(type=='Discard'){
+        // If clickign on save btn, check if value is there
+        let forminput = ele.parentNode.parentNode.querySelector('.newtaskinputs');
+        let titleinput = forminput.querySelector('.titleinput');
+        let descriptioninput = forminput.querySelector('.descriptioninput');
+        titleinput.value='';
+        descriptioninput.value='';
+
+        // toggle the form
+        ele.parentNode.parentNode.hidden = !ele.parentNode.parentNode.hidden;
+        ele.parentNode.parentNode.parentNode.querySelector('.newtaskbtn').hidden = !ele.parentNode.parentNode.parentNode.querySelector('.newtaskbtn').hidden
+    }
+    
+    // console.log(type);
     //TBW
 }
 
@@ -56,7 +106,7 @@ function saveData(){
     console.log('Saved Data')
 }
 
-// Hide and unhide the new list form whenever appropriate buttons are pressed
+// Hide and unhide the NEW LIST FORM
 function toggleListForm(){
     newlistbtn.hidden = !newlistbtn.hidden;
     newlistform.hidden = !newlistform.hidden;
@@ -69,6 +119,7 @@ function toggleListForm(){
 }
 
 // Update the DOM Whenever needed
+// UPDATE FUNCTION TO UPDATE IN PROPER SEQUENCE
 function updateDOM(){
         //REMOVE ALL LISTS
         let lists = root.querySelectorAll('.list');
@@ -83,7 +134,7 @@ function updateDOM(){
             // Interpret the active tasks from object into UI
             let tasks=userdata[i].tasks;
             let activetasks = ``, archivedtasks = ``;
-            for(var u=0; u<tasks.length; i++){
+            for(var u=0; u<tasks.length; u++){
                 if(tasks[u].status==false)
                 activetasks += `
                 <div class="task" id="${tasks[u].id}">
@@ -109,7 +160,7 @@ function updateDOM(){
                     <input class="listtitle" type="text" value="${userdata[i].name}">
                     <div class="listicons">
                         <img src="assets/archive.svg" class="togglearchive" alt="Archive" width="14px">
-                        <img src="assets/cross.svg" class="deletelist" alt="Delete" width="14px">
+                        <img src="assets/cross.svg" class="deletelist" alt="Delete" width="14px" onclick="deleteList(this)">
                     </div>
                 </div>
 
@@ -126,7 +177,7 @@ function updateDOM(){
                 <div class="listnewtask">
 
                     <!-- Main Btn - Click to make form visible -->
-                    <div class="newtaskbtn">+ Add new Task..</div>
+                    <div class="newtaskbtn" onclick="toggleTaskForm(this)">+ Add new Task..</div>
 
                     <!-- Form to fill up task info -->
                     <div class="newtaskform" hidden>
@@ -135,8 +186,8 @@ function updateDOM(){
                             <input type="text" class="descriptioninput" placeholder="Enter Description... (optional)"><br>
                         </div>
                         <div class="newtaskbtns">
-                            <img src="assets/checkmark.svg" alt="Save" width="18px">
-                            <img src="assets/cross.svg" alt="Discard" width="14px">
+                            <img src="assets/checkmark.svg" alt="Save" width="18px" onclick="toggleTaskForm(this)">
+                            <img src="assets/cross.svg" alt="Discard" width="14px" onclick="toggleTaskForm(this)">
                         </div>
                     </div>
 
@@ -150,20 +201,8 @@ function updateDOM(){
             // console.log(userdata[i])
             root.prepend(tmp.firstElementChild);
         }
-
-        reattachEventListeners();
 }
 
-// This function will reattach all event listeners
-function reattachEventListeners(){
-    let deletelistbtns = document.querySelectorAll('.deletelist');
-    deletelistbtns.forEach(val => {
-        val.removeEventListener('click', e=>deleteList(e));
-    })
-    deletelistbtns.forEach(val => {
-        val.addEventListener('click', e=>deleteList(e));
-    })
-}
 
 
 // HANDLE NEW LIST CREATION
