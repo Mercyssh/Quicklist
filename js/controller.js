@@ -41,8 +41,7 @@ function deleteList(ele){
 
 // TO BE CONTINUED FROM HERE
 function createTask(listid, title, description){
-    //TBW
-    console.log(listid)
+
     let listindex = userdata.findIndex(v => v.id == listid);
     userdata[listindex].tasks.push(new Task(title, description, false));
     
@@ -50,7 +49,18 @@ function createTask(listid, title, description){
     saveData();
 }
 function doneTask(ele){
-    //TBW
+
+    // Handle animations - 1
+    spans = ele.querySelectorAll("span");
+    spans.forEach(span => span.classList.add('strikethrough'));
+    checkmark = ele.querySelector("img")
+    checkmark.classList.add('checkmark');
+
+    //Put main logic of changing userdata here
+    setTimeout(() => {
+        ele.classList.add('collapse')
+        console.log('done animation');
+    }, 600);
 }
 function deleteTask(ele){
     //TBW
@@ -137,9 +147,9 @@ function updateDOM(){
             for(var u=0; u<tasks.length; u++){
                 if(tasks[u].status==false)
                 activetasks += `
-                <div class="task" id="${tasks[u].id}">
-                    <div class="taskheader"><h3 class="tasktitle">${tasks[u].title}</h3><img src="assets/checkmark.svg" alt="Done" width="16px" hidden> </div>
-                    <p class="taskdescription">${tasks[u].description}</p>
+                <div class="task collapse" id="${tasks[u].id}" onclick="doneTask(this)">
+                    <div class="taskheader"><h3 class="tasktitle"><span class="">${tasks[u].title}</span></h3><img src="assets/checkmark.svg" alt="Done" width="16px" class="" style="opacity:0;"> </div>
+                    <p class="taskdescription"><span class="">${tasks[u].description}</span></p>
                 </div>
                 `
                 else
@@ -157,7 +167,7 @@ function updateDOM(){
 
                 <!-- Header containing Icons and Title of List -->
                 <div class="listheader">
-                    <input class="listtitle" type="text" value="${userdata[i].name}">
+                    <input class="listtitle" type="text" value="${userdata[i].name}" spellcheck="false">
                     <div class="listicons">
                         <img src="assets/archive.svg" class="togglearchive" alt="Archive" width="14px">
                         <img src="assets/cross.svg" class="deletelist" alt="Delete" width="14px" onclick="deleteList(this)">
@@ -182,8 +192,8 @@ function updateDOM(){
                     <!-- Form to fill up task info -->
                     <div class="newtaskform" hidden>
                         <div class="newtaskinputs">
-                            <input type="text" class="titleinput" placeholder="Enter Title.."><br>
-                            <input type="text" class="descriptioninput" placeholder="Enter Description... (optional)"><br>
+                            <input type="text" class="titleinput" placeholder="Enter Title.." spellcheck="false"><br>
+                            <input type="text" class="descriptioninput" placeholder="Enter Description... (optional)" spellcheck="false"><br>
                         </div>
                         <div class="newtaskbtns">
                             <img src="assets/checkmark.svg" alt="Save" width="18px" onclick="toggleTaskForm(this)">
