@@ -93,9 +93,17 @@ function doneTask(ele){
         //Actual logic goes here
         setTimeout(() => {
             userdata[listindex].tasks[taskindex].status=true;
-            saveData();
+
+            // Save here instead, only save when no other tasks are collapsing
+            ele.remove();
+            let flag = root.querySelectorAll('.collapseup').length
+            if(flag<1){
+                saveData();
+            }
         }, 1000)
     }, 600);
+
+    
 
 }
 function deleteTask(ele){
