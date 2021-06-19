@@ -68,6 +68,21 @@ body{
     justify-content: space-between;
     align-items: center;
 }
+.greenify{
+    /* animation: greenify .3s ease-out forwards; */
+    filter: invert(.5) sepia(1) hue-rotate(80deg) saturate(4);
+}
+/* .ungreenify{
+    animation: ungreenify .3s ease-out forwards;
+}
+@keyframes greenify {
+    100% {filter: invert(.5) sepia(1) hue-rotate(80deg) saturate(4);}
+}
+@keyframes ungreenify {
+    100%{filter: invert(0) sepia(0) hue-rotate(0deg) saturate(1);}
+} */
+
+
 /* Styles the input tag for the list title */
 .listtitle{
     font-family: 'Poppins', sans-serif;
@@ -104,20 +119,21 @@ body{
 .listtasks{
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
-    padding: 20px 0px
+    /* row-gap: 10px; */
+    padding: 20px 0px;
 }
 /* Container for task */
 .task{
     width: 100%; 
     max-height: 300px;
+
+    margin-top: 10px;
     padding: 11px 23px;
     border-left: 4px solid transparent;
+    overflow: hidden;
 
     cursor: pointer;
-
-    /* might have to delete */
-    transition: border-left 0.1s, box-shadow 0.1s, max-height 1s ease-in-out;
+    transition: max-height 1s, padding 1s .5s, margin-top 1s .5s, box-shadow 0.2s, border-left 0.2s;  
 }
 .task:hover{
     border-left: 4px solid var(--tertiarytext);
@@ -132,11 +148,13 @@ body{
     align-items: center;
 }
 .tasktitle{
+    overflow-wrap: break-word;
     max-width: 80%;
     font-size: 18px;
     font-weight: 400;
 }
 .taskdescription{
+    overflow-wrap: break-word;
     max-width: 80%;
     font-size: 12px;
     font-weight: 400;
@@ -218,6 +236,10 @@ body{
     from {background-size: 0% 2px; color: currentColor;}
     to {background-size: 100% 2px; color: var(--tertiarytext);}
 }
+.completed{
+    color: var(--tertiarytext);
+    text-decoration: line-through;
+}
 
 /* Checkmark Magic */
 .checkmark{
@@ -231,14 +253,15 @@ body{
 }
 
 /* Collapse magic */
-.collapse{
-    overflow: hidden;
-    /* animation: collapse .2s ease-in-out forwards; */
+.collapseup{
+    max-height: 0px;
+    margin-top: 0px;
+    padding: 0px;
 }
-/* @keyframes collapse{
-    from {transform: scaleY(1);}
-    to {transform: scaleY(0);}
-} */
+.collapseleft{
+    max-width: 0px;
+    padding: 0px;
+}
 
 
 /* SECTION HANDLES NEW LIST CREATION */

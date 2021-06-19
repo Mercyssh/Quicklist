@@ -38,6 +38,21 @@ function deleteList(ele){
     userdata.splice(list, 1);
     saveData();
 }
+// Toggle list mode
+function toggleListMode(ele){
+
+    let list = ele.closest('.list');
+    let listid = list.id;
+    let listindex = userdata.findIndex(val => val.id == listid);
+    if(userdata[listindex].mode=='active'){
+        userdata[listindex].mode='archived';
+    }
+    else {
+        userdata[listindex].mode='active';
+    }
+    saveData();
+
+}
 
 // TO BE CONTINUED FROM HERE
 function createTask(listid, title, description){
@@ -51,16 +66,37 @@ function createTask(listid, title, description){
 function doneTask(ele){
 
     // Handle animations - 1
-    spans = ele.querySelectorAll("span");
+    let spans = ele.querySelectorAll("span");
     spans.forEach(span => span.classList.add('strikethrough'));
-    checkmark = ele.querySelector("img")
+    let checkmark = ele.querySelector("img");
     checkmark.classList.add('checkmark');
 
-    //Put main logic of changing userdata here
+    // Get the task and list info
+    let taskid = ele.id;
+    let taskindex;
+    let listindex = userdata.findIndex(i => {
+
+        let flag = i.tasks.findIndex(j => {
+            return j.id == ele.id;
+        });
+
+        taskindex=flag;
+        return flag!=-1
+
+    })
+    let listid = userdata[listindex].id;
+
+    //Start collapse animation
     setTimeout(() => {
-        ele.classList.add('collapse')
-        console.log('done animation');
+        ele.classList.add('collapseup');
+
+        //Actual logic goes here
+        setTimeout(() => {
+            userdata[listindex].tasks[taskindex].status=true;
+            saveData();
+        }, 1000)
     }, 600);
+
 }
 function deleteTask(ele){
     //TBW
@@ -139,7 +175,7 @@ function updateDOM(){
         for(var i=0; i<userdata.length; i++){
 
             // find if there are no tasks
-            let hidden = userdata[i].tasks.length==0;
+            let hidden = userdata[i].mode!='active';
 
             // Interpret the active tasks from object into UI
             let tasks=userdata[i].tasks;
@@ -147,7 +183,7 @@ function updateDOM(){
             for(var u=0; u<tasks.length; u++){
                 if(tasks[u].status==false)
                 activetasks += `
-                <div class="task collapse" id="${tasks[u].id}" onclick="doneTask(this)">
+                <div class="task" id="${tasks[u].id}" onclick="doneTask(this)">
                     <div class="taskheader"><h3 class="tasktitle"><span class="">${tasks[u].title}</span></h3><img src="assets/checkmark.svg" alt="Done" width="16px" class="" style="opacity:0;"> </div>
                     <p class="taskdescription"><span class="">${tasks[u].description}</span></p>
                 </div>
@@ -169,7 +205,7 @@ function updateDOM(){
                 <div class="listheader">
                     <input class="listtitle" type="text" value="${userdata[i].name}" spellcheck="false">
                     <div class="listicons">
-                        <img src="assets/archive.svg" class="togglearchive" alt="Archive" width="14px">
+                        <img src="assets/archive.svg" class="togglearchive ${hidden ? '': 'ungreenify'} ${hidden ? 'greenify': ''}" alt="Archive" width="14px" onclick="toggleListMode(this)">
                         <img src="assets/cross.svg" class="deletelist" alt="Delete" width="14px" onclick="deleteList(this)">
                     </div>
                 </div>
@@ -179,7 +215,7 @@ function updateDOM(){
                 ${activetasks}
                 </div>
 
-                <div class="listtasks archivetasks hide">
+                <div class="listtasks archivetasks ${hidden ? '' : 'hide'}">
                 ${archivedtasks}
                 </div>
 
@@ -211,6 +247,7 @@ function updateDOM(){
             // console.log(userdata[i])
             root.prepend(tmp.firstElementChild);
         }
+        // console.log(root);
 }
 
 
