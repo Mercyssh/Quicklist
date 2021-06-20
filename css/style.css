@@ -35,13 +35,29 @@ body{
 
 #root{
     width: max-content;
+    height: max-content;
     margin: 41px;
     display: flex;
-    /* column-gap: 34px; */
 }
 
 .hide{
     display: none !important;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+body::-webkit-scrollbar-track {
+    background-color: var(--primarybg);
+}
+body::-webkit-scrollbar-thumb {
+    background-color: var(--secondarybg);
+    border: 2px solid var(--primarybg);
+    border-radius: 9999px;
+}
+body::-webkit-scrollbar-thumb:hover{
+    background-color: var(--hoverbg);
 }
 
 
@@ -287,6 +303,7 @@ body{
     width: var(--maxlistwidth);
     height: max-content;
     padding: 14px 20px;
+    margin-right: 34px;
 
     background-color: var(--secondarybg);
     border-radius: 8px;

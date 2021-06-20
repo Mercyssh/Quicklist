@@ -52,6 +52,21 @@ function deleteList(ele){
 
     }, 500);
 }
+// Update the list name whenever editted
+function updateListName(ele){
+    let listcard = ele.closest('.list');
+    let listindex = userdata.findIndex(val => val.id == listcard.id);
+    userdata[listindex].name = ele.value;
+    saveData();
+    // console.log(userdata[listindex]);
+    // console.log('te')
+}
+// helping function to do same thing^ but with keyboard enter key
+function blurme(ele, e){
+    if(e.key=='Enter'){
+        ele.blur();
+    }
+}
 // Toggle list mode
 function toggleListMode(ele){
 
@@ -288,7 +303,7 @@ function updateDOM(){
 
                 <!-- Header containing Icons and Title of List -->
                 <div class="listheader">
-                    <input class="listtitle" type="text" value="${userdata[i].name}" spellcheck="false">
+                    <input class="listtitle" type="text" value="${userdata[i].name}" spellcheck="false" onkeydown="blurme(this, event)" onblur="updateListName(this)">
                     <div class="listicons">
                         <img src="assets/archive.svg" class="togglearchive ${hidden ? '': 'ungreenify'} ${hidden ? 'greenify': ''}" alt="Archive" width="14px" onclick="toggleListMode(this)">
                         <img src="assets/cross.svg" class="deletelist" alt="Delete" width="14px" onclick="deleteList(this)">
@@ -359,3 +374,46 @@ discardlistbtn.addEventListener('click', e=>{
 })
 updateDOM();
 
+
+
+// HANDLE DRAG TO SCROLL
+let bod = document.querySelector('#root');
+let pos = { top: 0, left: 0, x: 0, y: 0 };
+const mouseDownHandler = function(e) {
+    pos = {
+        // The current scroll 
+        left: window.scrollX,
+        top: window.scrollY,
+        // Get the current mouse position
+        x: e.clientX,
+        y: e.clientY,
+    };
+
+    // Show that its Grabbing
+    document.body.style.cursor = 'grabbing';
+    document.body.style.userSelect = 'none';
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+};
+const mouseMoveHandler = function(e) {
+    // How far the mouse has been moved
+    const dx = e.clientX - pos.x;
+    const dy = e.clientY - pos.y;
+
+    // Scroll the element
+    window.scrollTo({
+        top: pos.top - dy,
+        left: pos.left - dx,
+        behavior: 'auto'
+    });
+
+};
+const mouseUpHandler = function() {
+    document.body.style.cursor = 'default';
+    document.body.style.removeProperty('user-select');
+
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
+};
+bod.addEventListener('mousedown', mouseDownHandler);
