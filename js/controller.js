@@ -65,10 +65,9 @@ function toggleListMode(ele){
         userdata[listindex].mode='active';
     }
     saveData();
-
 }
 
-// TO BE CONTINUED FROM HERE
+// HANDLE TASKS
 function createTask(listid, title, description){
 
     let listindex = userdata.findIndex(v => v.id == listid);
@@ -121,19 +120,54 @@ function doneTask(ele){
 
 }
 function deleteTask(ele){
-    //TBW
+
+    //Animations
+    let checkmark = ele.querySelector('img');
+    let tasktitle = ele.querySelector('.tasktitle');
+    let taskdescription = ele.querySelector('.taskdescription');
+
+    checkmark.classList.add('redify');
+    ele.classList.add('collapseup');
+    tasktitle.classList.add('deleting');
+    taskdescription.classList.add('deleting');
+
+    // Get the task and list info
+    let taskindex;
+    let listindex = userdata.findIndex(i => {
+
+        let flag = i.tasks.findIndex(j => {
+            return j.id == ele.id;
+        });
+
+        taskindex=flag;
+        return flag!=-1
+
+    })
+
+    // Actual logic now
+    setTimeout(() => {
+
+        // remove task
+        userdata[listindex].tasks.splice(taskindex, 1);
+
+        // Save here instead, only save when no other tasks are collapsing
+        ele.remove();
+        let flag = root.querySelectorAll('.collapseup').length
+        if(flag<1){
+            saveData();
+        }
+    }, 1000);
 }
 function toggleTaskForm(ele){
     
     let type = ele.alt;
-
-    // newlistbtn.hidden = !newlistbtn.hidden;
-    // newlistform.hidden = !newlistform.hidden;
+    // console.log(ele);
 
     if(type==undefined){
+        let titleinput = ele.closest('.listnewtask').querySelector('.titleinput');
         ele.hidden = !ele.hidden;
         ele.parentNode.querySelector('.newtaskform').hidden = !ele.parentNode.querySelector('.newtaskform');
-
+        titleinput.focus();
     } else if(type=='Save'){
         // If clickign on save btn, check if value is there
         let forminput = ele.parentNode.parentNode.querySelector('.newtaskinputs');
@@ -142,10 +176,10 @@ function toggleTaskForm(ele){
 
         if(titleinput.value!='')
             createTask(ele.closest('.list').id, titleinput.value, descriptioninput.value);
+            
+        // toggle the form
         titleinput.value='';
         descriptioninput.value='';
-
-        // toggle the form
         ele.parentNode.parentNode.hidden = !ele.parentNode.parentNode.hidden;
         ele.parentNode.parentNode.parentNode.querySelector('.newtaskbtn').hidden = !ele.parentNode.parentNode.parentNode.querySelector('.newtaskbtn').hidden
         
@@ -165,6 +199,34 @@ function toggleTaskForm(ele){
     
     // console.log(type);
     //TBW
+}
+function toggleTaskFormKeyboardCheck(elem, e){
+
+    let form = elem.closest('.listnewtask');
+    let newtaskbtn = form.querySelector('.newtaskbtn');
+    let newtaskform = form.querySelector('.newtaskform');
+
+    let titleinput = elem.parentNode.querySelector('.titleinput');
+    let descriptioninput = elem.parentNode.querySelector('.descriptioninput');
+
+    if(e.key=="Enter"){
+        if(titleinput.value!=''){
+            // console.log(newtaskbtn);
+            createTask(elem.closest('.list').id, titleinput.value, descriptioninput.value);
+
+            //Toggle On off
+            newtaskbtn.hidden = !newtaskbtn.hidden;
+            newtaskform.hidden = !newtaskform.hidden;
+            titleinput.value='';
+            descriptioninput.value='';
+        }
+    } else if(e.key=="Escape"){
+        //Toggle On off
+        newtaskbtn.hidden = !newtaskbtn.hidden;
+        newtaskform.hidden = !newtaskform.hidden;
+        titleinput.value='';
+        descriptioninput.value='';
+    }
 }
 
 // Save userdata to localstorage
@@ -187,9 +249,10 @@ function toggleListForm(){
 }
 
 // Update the DOM Whenever needed
-// UPDATE FUNCTION TO UPDATE IN PROPER SEQUENCE
 function updateDOM(){
+
         //REMOVE ALL LISTS
+        let newlistbtn_ = document.getElementById('newlistbtn');
         let lists = root.querySelectorAll('.list');
         lists.forEach(element => element.remove());
 
@@ -212,8 +275,8 @@ function updateDOM(){
                 `
                 else
                 archivedtasks += `
-                <div class="task" id="${tasks[u].id}">
-                    <div class="taskheader"><h3 class="tasktitle completed">${tasks[u].title}</h3><img src="assets/checkmark.svg" alt="Done" width="16px"> </div>
+                <div class="task" id="${tasks[u].id}" onclick="deleteTask(this)">
+                    <div class="taskheader"><h3 class="tasktitle completed">${tasks[u].title}</h3><img src="assets/checkmark.svg" class="checkmark2" alt="Done" width="16px"> </div>
                     <p class="taskdescription completed">${tasks[u].description}</p>
                 </div>
                 `
@@ -250,8 +313,8 @@ function updateDOM(){
                     <!-- Form to fill up task info -->
                     <div class="newtaskform" hidden>
                         <div class="newtaskinputs">
-                            <input type="text" class="titleinput" placeholder="Enter Title.." spellcheck="false"><br>
-                            <input type="text" class="descriptioninput" placeholder="Enter Description... (optional)" spellcheck="false"><br>
+                            <input type="text" class="titleinput" placeholder="Enter Title.." spellcheck="false" onkeydown="toggleTaskFormKeyboardCheck(this, event)"><br>
+                            <input type="text" class="descriptioninput" placeholder="Enter Description... (optional)" spellcheck="false" onkeydown="toggleTaskFormKeyboardCheck(this, event)"><br>
                         </div>
                         <div class="newtaskbtns">
                             <img src="assets/checkmark.svg" alt="Save" width="18px" onclick="toggleTaskForm(this)">
@@ -266,18 +329,25 @@ function updateDOM(){
             let tmp = document.createElement('div');
             tmp.innerHTML = template;
 
-            // console.log(userdata[i])
-            root.prepend(tmp.firstElementChild);
+            root.insertBefore(tmp.firstElementChild, newlistbtn_);
+            // root.prepend(tmp.firstElementChild);
         }
         // console.log(root);
 }
-
-
 
 // HANDLE NEW LIST CREATION
 // Toggle Vibility
 newlistbtn.addEventListener('click', e=>{
     toggleListForm();
+})
+// Keyboard enter check
+newlisttitle.addEventListener('keydown', e=>{
+    if(e.key=="Enter"){
+        createList();
+        toggleListForm();
+    } else if (e.key=="Escape"){
+        toggleListForm();
+    }
 })
 // Validate title, create list and toggle visibility
 acceptlistbtn.addEventListener('click', e=>{
