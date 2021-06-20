@@ -32,11 +32,25 @@ function createList(){
 }
 // Delete the list
 function deleteList(ele){
+    
+    //ANIMATIONS HERE
     let listcard =  ele.parentNode.parentNode.parentNode;
-    console.log(listcard)
-    let list = userdata.findIndex(val => val.id == listcard.id);
-    userdata.splice(list, 1);
-    saveData();
+    listcard.classList.add('collapseleft');
+    
+    // MAIN LOGIC HERE
+    setTimeout(() => {
+
+        let listindex = userdata.findIndex(val => val.id == listcard.id);
+        userdata.splice(listindex, 1);
+
+        // Save here instead, only save when no other tasks are collapsing
+        listcard.remove();
+        let flag = root.querySelectorAll('.collapseleft').length
+        if(flag<1){
+            saveData();
+        }
+
+    }, 500);
 }
 // Toggle list mode
 function toggleListMode(ele){

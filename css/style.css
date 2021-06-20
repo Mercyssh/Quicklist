@@ -36,7 +36,7 @@ body{
     width: max-content;
     margin: 41px;
     display: flex;
-    column-gap: 34px;
+    /* column-gap: 34px; */
 }
 
 .hide{
@@ -51,17 +51,23 @@ body{
     display: flex;
     flex-direction: column;
     width: var(--maxlistwidth);
+    max-width: var(--maxlistwidth);
     height: max-content;
-
+    margin-right: 34px;
+    
     background-color: var(--secondarybg);
     border-radius: 8px;
     box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.15);
+    
+    overflow: hidden;
+    transition: max-width .5s, margin-right 1s 0.5s, padding .5s;
 }
 /* Container for List title and icons */
 .listheader{
     padding-left: 12px;
     padding-top: 14px;
     padding-right: 22px;
+    overflow: hidden;
 
     display: flex;
     column-gap: 30px;
@@ -72,15 +78,6 @@ body{
     /* animation: greenify .3s ease-out forwards; */
     filter: invert(.5) sepia(1) hue-rotate(80deg) saturate(4);
 }
-/* .ungreenify{
-    animation: ungreenify .3s ease-out forwards;
-}
-@keyframes greenify {
-    100% {filter: invert(.5) sepia(1) hue-rotate(80deg) saturate(4);}
-}
-@keyframes ungreenify {
-    100%{filter: invert(0) sepia(0) hue-rotate(0deg) saturate(1);}
-} */
 
 
 /* Styles the input tag for the list title */
@@ -117,6 +114,7 @@ body{
 
 /* Container for list of tasks */
 .listtasks{
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     /* row-gap: 10px; */
@@ -143,6 +141,7 @@ body{
     color: var(--tertiarytext); */
 }
 .taskheader{
+    overflow: hidden;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -260,6 +259,7 @@ body{
 }
 .collapseleft{
     max-width: 0px;
+    margin-right: 0px;
     padding: 0px;
 }
 
